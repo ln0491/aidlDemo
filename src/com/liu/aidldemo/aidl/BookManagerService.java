@@ -39,6 +39,7 @@ public class BookManagerService extends Service {
 		public void addBook(Book book) throws RemoteException {
 			Log.d(TAG, "service addBook");
 			mBookList.add(book);
+			onNewBookArrived(book);
 		}
 		
 		@Override
