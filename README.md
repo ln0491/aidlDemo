@@ -2,7 +2,7 @@
 
 
 
-###AIDL支付数据类型
+### AIDL支持数据类型
 
 
 1. 基本数据类型(int ,long,char,boolean,double等)
