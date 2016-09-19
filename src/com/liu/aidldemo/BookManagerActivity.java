@@ -7,6 +7,7 @@ import com.liu.aidldemo.aidl.BookManagerService;
 import com.liu.aidldemo.aidl.IBookManager;
 import com.liu.aidldemo.aidl.IOnNewBookArrivedListener;
 
+import android.R.mipmap;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,8 +16,10 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.IBinder.DeathRecipient;
 import android.os.RemoteException;
 import android.util.Log;
+import android.view.View;
 
 public class BookManagerActivity extends Activity {
 	
@@ -95,12 +98,32 @@ public class BookManagerActivity extends Activity {
 		
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
-			if (mIBookManager != null) {
-				mIBookManager = null;
-			}
+			toBindService();
 		}
 		
 	}
+	
+	/**
+	 * 为Binder设置死亡监听
+	 */
+	private IBinder.DeathRecipient mDeathRecipient = new DeathRecipient() {
+		
+		@Override
+		public void binderDied() {
+			
+			if(mIBookManager==null){
+				return;
+			}
+			
+			mIBookManager.asBinder().unlinkToDeath(mDeathRecipient, 0);
+			
+			mIBookManager =null;
+			/**
+			 * 重新连接远程服务
+			 */
+			toBindService();
+		}
+	};
 	
 	
 	private IOnNewBookArrivedListener mOnNewBookArrivedListener = new IOnNewBookArrivedListener.Stub() {
@@ -130,5 +153,24 @@ public class BookManagerActivity extends Activity {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void getBookList(View v){
+		new Thread(){
+			public void run() {
+				try {
+					if(mIBookManager!=null){
+					List<Book> bookList = mIBookManager.getBookList();
+					
+					for(Book book:bookList){
+						Log.d(TAG, "getBookList "+book.toString());
+					}
+					}
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+				
+			};
+		}.start();
 	}
 }

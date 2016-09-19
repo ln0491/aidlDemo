@@ -1,7 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
     <TextView
@@ -9,4 +10,10 @@
         android:layout_height="wrap_content"
         android:text="BookManagerActivity" />
 
-</RelativeLayout>
+    <Button 
+        android:id="@+id/btnGetList"
+       	android:onClick="getBookList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="getBookList"/>
+</LinearLayout>

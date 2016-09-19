@@ -3,6 +3,13 @@
     package="com.liu.aidldemo"
     android:versionCode="1"
     android:versionName="1.0" >
+    
+    <permission 
+        android:name="com.liu.aidldemo.permission.ACCESS_BOOK_SERVICE"
+        android:protectionLevel="normal"/>
+
+    <uses-permission android:name="com.liu.aidldemo.permission.ACCESS_BOOK_SERVICE"/>
+    
 
     <uses-sdk
         android:minSdkVersion="14"
